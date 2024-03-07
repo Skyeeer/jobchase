@@ -1,0 +1,14 @@
+header {
+    display: flex;
+    flex-direction: column;
+}
+
+.search {
+    width: 95%;
+    padding: 10px;
+    border: solid black 1px;
+    box-shadow: 0px 1.5px;
+    margin-top: 10px;
+    align-self: center;
+    font-size: 25px;
+}
