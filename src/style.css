@@ -12,3 +12,64 @@ header {
     align-self: center;
     font-size: 25px;
 }
+
+main {
+    width: 50%;
+}
+
+aside {
+    width: 50%;
+}
+
+.card {
+    width: 80%;
+    border: 0.8px solid black;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.cardhead {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bookmark:hover {
+    width: 35px;
+    transition: 0.4s;
+    height: 35px;
+}
+
+.position {
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+}
+
+.org {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.tag {
+    background-color: #0fc5ff;
+    /* border: 0.5px solid black; */
+    border-radius: 10px;
+    padding: 5px;
+}
