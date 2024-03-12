@@ -6,16 +6,16 @@ import bookmark from './bookmark.png';
 import jobs from './jobs.json';
 console.log(jobs);
 
-const Header = () => {
+const Header = ({ onSearchChange }) => {
     return (
         <header>
             <img src={logo} alt="logo gone" width="300" height="60"></img>
-            <input className='search' type='text' placeholder='SEARCH' ></input>
+            <input className='search' type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
         </header>
     );
 };
 
-const Aside = ({ onCardClick }) => {
+const Aside = ({ jobs, onCardClick }) => {
     return (
         <aside>
             <div className='cardContainer'>
@@ -66,17 +66,28 @@ const Main = ({ job }) => {
 };
 
 const App = () => {
-
+    const [searchTerm, setSearchTerm] = useState('');
     const [selectedJob, setSelectedJob] = useState(null);
     const handleCardCheck = (job) => {
         setSelectedJob(job);
     };
+    const handleSearch = (term) => {
+        setSearchTerm(term.toLowerCase());
+    };
+
+    const filteredJobs = jobs.filter((job) =>
+        job.location.toLowerCase().includes(searchTerm) ||
+        job.contract.toLowerCase().includes(searchTerm) ||
+        job.level.toLowerCase().includes(searchTerm) ||
+        job.languages.some(language => language.toLowerCase().includes(searchTerm))
+    );
+
 
     return (
         <div>
-            <Header />
+            <Header onSearchChange={handleSearch} />
             <div style={{ display: 'flex' }}>
-                <Aside onCardClick={handleCardCheck} />
+                <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
                 <Main job={selectedJob} />
             </div>
         </div>
