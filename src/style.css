@@ -15,6 +15,53 @@ header {
 
 main {
     width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.article {
+    border: solid black 0.8px;
+    border-radius: 10px;
+    width: 80%;
+    margin-top: 10px;
+    box-shadow: 1px 2px;
+}
+
+.artBody {
+    padding: 20px;
+}
+
+.heroImg {
+    background-image: url(Hero.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 25vh;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.apply {
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    background-color: #fff;
+    border: 1px solid #0fc5ff;
+    color: #0fc5ff;
+    text-shadow: black 1px 1px;
+    letter-spacing: 1px;
+    transition: 0.4s;
+    margin-top: 10px;
+}
+
+.apply:hover {
+    background-color: #0fc5ff;
+    color: #fff;
+    border: #0fc5ff 1px solid;
+    transition: 0.4s;
 }
 
 aside {
@@ -76,6 +123,7 @@ ul {
 }
 
 .cardContainer {
-    max-height: 82vh;
+    margin-top: 10px;
+    max-height: 80vh;
     overflow-y: auto;
 }

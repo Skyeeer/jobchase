@@ -47,13 +47,20 @@ const Aside = ({ onCardClick }) => {
 };
 
 const Main = ({ job }) => {
-    if (!job) return <main>Select a job to see details :)</main>;
+    if (!job) return <main></main>;
 
 
     return (
         <main>
-            <h2>{job.position} at {job.company}</h2>
-            <p>{job.description || 'Job description goes here.'}</p>
+            <div className='article'>
+                <div className='heroImg'></div>
+                <div className='artBody'>
+                    <h2 className='position'>{job.position}</h2>
+                    <p className='org'>{job.company}</p>
+                    <button className='apply'>Apply</button>
+                    <p>{job.description || 'Job description goes here.'}</p>
+                </div>
+            </div>
         </main>
     );
 };
