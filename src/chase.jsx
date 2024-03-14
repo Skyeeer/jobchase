@@ -1,5 +1,5 @@
 // App.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.png';
 import './style.css';
 import bookmark from './bookmark.png';
@@ -46,6 +46,7 @@ const Aside = ({ jobs, onCardClick }) => {
     );
 };
 
+
 const Main = ({ job }) => {
     if (!job) return <main></main>;
 
@@ -66,6 +67,7 @@ const Main = ({ job }) => {
 };
 
 const App = () => {
+    // const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedJob, setSelectedJob] = useState(null);
     const handleCardCheck = (job) => {
@@ -81,6 +83,16 @@ const App = () => {
         job.level.toLowerCase().includes(searchTerm) ||
         job.languages.some(language => language.toLowerCase().includes(searchTerm))
     );
+
+    // useEffect(() => {
+    //     fetch('jobs.json')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setJobs(data);
+    //         })
+    //         .catch(error => console.error("JSON fetch failed to load", error));
+    // }, []);
+
 
 
     return (
