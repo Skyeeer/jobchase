@@ -30,11 +30,11 @@ const Aside = ({ jobs, onCardClick }) => {
                                 <p className={style.org}>{job.company}</p>
                                 <p className='description'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo ea vero maxime maiores temporibus.</p>
                                 <div className={style.tags}>
-                                    <div className={style.tag}>{job.location}</div>
-                                    <div className={style.tag}>{job.contract}</div>
-                                    <div className={style.tag}>{job.level}</div>
-                                    {job.languages.map((language) => (
-                                        <div className={style.tag} key={language}>{language}</div>
+                                    {job.location && <div className={style.tag}>{job.location}</div>}
+                                    {job.contract && <div className={style.tag}>{job.contract}</div>}
+                                    {job.level && <div className={style.tag}>{job.level}</div>}
+                                    {job.languages && job.languages.map((language) => (
+                                        language && <div className={style.tag} key={language}>{language}</div>
                                     ))}
                                 </div>
                             </div>

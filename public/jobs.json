@@ -173,5 +173,15 @@
             "React",
             "Sass"
         ]
+    },
+    {
+        "id": 11,
+        "company": "Quinn Industies",
+        "logo": "./images/manage.svg",
+        "position": "Data Analyst",
+        "role": "Fullstack",
+        "postedAt": "14d ago",
+        "contract": "Full Time",
+        "location": "Remote"
     }
 ]
