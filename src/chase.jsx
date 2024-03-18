@@ -1,40 +1,40 @@
 // App.js
 import React, { useEffect, useState } from 'react';
 import logo from './logo.png';
-import './style.css';
+import style from './style.module.css';
 import bookmark from './bookmark.png';
 // import jobs from './jobs.json';
 // console.log(jobs);
 
 const Header = ({ onSearchChange }) => {
     return (
-        <header>
+        <header className={style.header}>
             <img src={logo} alt="logo gone" width="300" height="60"></img>
-            <input className='search' type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
+            <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
         </header>
     );
 };
 
 const Aside = ({ jobs, onCardClick }) => {
     return (
-        <aside>
-            <div className='cardContainer'>
+        <aside className={style.aside}>
+            <div className={style.cardContainer}>
                 <ul>
                     {jobs.map((job) => (
                         <li key={job.id} onClick={() => onCardClick(job)}>
-                            <div className='card'>
-                                <div className='cardhead'>
-                                    <h2 className='position'>{job.position}</h2>
-                                    <img className='bookmark' src={bookmark} width={30} height={30} alt='Bookmark'></img>
+                            <div className={style.card}>
+                                <div className={style.cardhead}>
+                                    <h2 className={style.position}>{job.position}</h2>
+                                    <img className={style.bookmark} src={bookmark} width={30} height={30} alt='Bookmark'></img>
                                 </div>
-                                <p className='org'>{job.company}</p>
+                                <p className={style.org}>{job.company}</p>
                                 <p className='description'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo ea vero maxime maiores temporibus.</p>
-                                <div className='tags'>
-                                    <div className='tag'>{job.location}</div>
-                                    <div className='tag'>{job.contract}</div>
-                                    <div className='tag'>{job.level}</div>
+                                <div className={style.tags}>
+                                    <div className={style.tag}>{job.location}</div>
+                                    <div className={style.tag}>{job.contract}</div>
+                                    <div className={style.tag}>{job.level}</div>
                                     {job.languages.map((language) => (
-                                        <div className='tag' key={language}>{language}</div>
+                                        <div className={style.tag} key={language}>{language}</div>
                                     ))}
                                 </div>
                             </div>
@@ -52,13 +52,13 @@ const Main = ({ job }) => {
 
     //************MÅSTE STYLAS************
     return (
-        <main>
-            <div className='article'>
-                <div className='heroImg'></div>
-                <div className='artBody'>
-                    <h2 className='position'>{job.position}</h2>
-                    <p className='org'>{job.company}</p>
-                    <button className='apply'>Apply</button>
+        <main className={style.main}>
+            <div className={style.article}>
+                <div className={style.heroImg}></div>
+                <div className={style.artBody}>
+                    <h2 className={style.position}>{job.position}</h2>
+                    <p className={style.org}>{job.company}</p>
+                    <button className={style.apply}>Apply</button>
                     <p>{job.description || 'Job description goes here.'}</p>
                 </div>
             </div>
@@ -90,6 +90,7 @@ const App = () => {
         job.location.toLowerCase().includes(searchTerm) ||
         job.contract.toLowerCase().includes(searchTerm) ||
         job.level.toLowerCase().includes(searchTerm) ||
+        job.company.toLowerCase().includes(searchTerm) ||
         job.languages.some(language => language.toLowerCase().includes(searchTerm))
     );
 
