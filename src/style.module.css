@@ -1,7 +1,19 @@
 .header {
     display: flex;
     flex-direction: column;
+    width: 90%;
 }
+
+.head {
+    display: flex;
+    flex-direction: row;
+}
+
+/* .signUp {
+    padding: 0;
+    margin: 0;
+}
+ */
 
 .search {
     width: 95%;
