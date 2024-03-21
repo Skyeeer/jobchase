@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
-import Signup from './signup';
+import signUpPage from './/signUpPage';
 import 'tailwindcss/tailwind.css';
 // import { BrowserRouter } from 'react-router-dom';
 import { Routes, Route, } from 'react-router-dom';
+
 
 // import jobs from './jobs.json';
 // console.log(jobs);
@@ -113,7 +114,7 @@ const App = () => {
                 <Main job={selectedJob} />
             </div>
             <Routes>
-                <Route path="/signup" element={<Signup />} />
+                <Route path="/signup" element={<signUpPage />} />
             </Routes>
         </div>
 
