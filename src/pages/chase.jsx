@@ -5,8 +5,8 @@ import style from '../style.module.css';
 import bookmark from '../bookmark.png';
 import Signup from './signup';
 import 'tailwindcss/tailwind.css';
-import { BrowserRouter } from 'react-router-dom';
-import { Routes, Route, Link } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route, } from 'react-router-dom';
 
 // import jobs from './jobs.json';
 // console.log(jobs);
@@ -113,7 +113,7 @@ const App = () => {
                 <Main job={selectedJob} />
             </div>
             <Routes>
-                <Route path="./signup" element={<Signup />} />
+                <Route path="/signup" element={<Signup />} />
             </Routes>
         </div>
 
