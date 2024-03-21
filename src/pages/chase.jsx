@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
-import signUpPage from './/signUpPage';
+import SignUpPage from './signUpPage';
 import 'tailwindcss/tailwind.css';
-// import { BrowserRouter } from 'react-router-dom';
-import { Routes, Route, } from 'react-router-dom';
+import { BrowserRouter, Link, Routes, Route, } from 'react-router-dom';
 
 
 // import jobs from './jobs.json';
@@ -20,7 +19,7 @@ const Header = ({ onSearchChange }) => {
                 <img src={logo} alt="logo gone" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
             </div>
-            <div className="flex flex-col items-center justify-center"><link to="/signup" className="bg-green-500 text-white text-lg py-1.5 px-3">Sign Up</link><p className="text-xs">or</p><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></div>
+            <div className="flex flex-col items-center justify-center"><Link to="/signUpPage" className="bg-green-500 text-white text-lg py-1.5 px-3">Sign Up</Link><p className="text-xs">or</p><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></div>
         </header>
 
     );
@@ -107,16 +106,19 @@ const App = () => {
 
 
     return (
-        <div className='p-4'>
+
+
+        <BrowserRouter>
             <Header onSearchChange={handleSearch} />
             <div style={{ display: 'flex' }}>
                 <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
                 <Main job={selectedJob} />
             </div>
             <Routes>
-                <Route path="/signup" element={<signUpPage />} />
+                <Route path="/signUpPage" element={<SignUpPage />} />
             </Routes>
-        </div>
+        </BrowserRouter>
+
 
     );
 };
