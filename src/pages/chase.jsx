@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
-import SignUpPage from './signUpPage';
+import SignUpPage from './signUpPage.jsx';
 import 'tailwindcss/tailwind.css';
 import { BrowserRouter, Link, Routes, Route, } from 'react-router-dom';
 
