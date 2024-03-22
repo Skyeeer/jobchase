@@ -26,9 +26,9 @@ function Signupform() {
             });
     };
     return (
-        <form onSubmit={handleSubmit(formSubmit)}>
+        <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
             <div>
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
                 <input
                     id="email"
                     type="email"
@@ -39,12 +39,13 @@ function Signupform() {
                             message: "Invalid email address"
                         }
                     })}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
                 />
-                {errors.email && <span>{errors.email.message}</span>}
+                {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
             </div>
 
             <div>
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password:</label>
                 <input
                     id="password"
                     type="password"
@@ -55,11 +56,24 @@ function Signupform() {
                             message: "Password must be at least 8 characters"
                         }
                     })}
+                    className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm"
                 />
-                {errors.password && <span>{errors.password.message}</span>}
+                {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
             </div>
 
-            {/* <div>
+            <button type="submit" className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600">Register</button>
+            <Link to="/signin" className="block text-center mt-4 text-green-500 hover:text-green-600">Already have an account? Sign In</Link>
+        </form>
+    );
+}
+
+export default Signupform;
+
+
+
+
+
+/* <div>
                 <label htmlFor="confirmPassword">Confirm Password:</label>
                 <input
                     id="confirmPassword"
@@ -73,15 +87,4 @@ function Signupform() {
                 {errors.confirmPassword && (
                     <span>{errors.confirmPassword.message}</span>
                 )}
-            </div> */}
-
-            <button type="submit">Register</button>
-            <Link to="/signin">Already have an account? Sign In</Link>
-
-        </form>
-    );
-}
-
-
-// export default signup;
-export default Signupform;
+            </div> */
