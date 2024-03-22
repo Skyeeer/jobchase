@@ -1,11 +1,13 @@
-import signupForm from './signupForm';
+import SignupForm from './signupForm';
+
+
 
 
 function SignUpPage() {
     return (
         <div>
             <h1>Sign Up</h1>
-            <signupForm />
+            <SignupForm />
         </div>
     );
 }
