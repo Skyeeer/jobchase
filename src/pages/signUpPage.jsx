@@ -7,9 +7,9 @@ function SignUpPage() {
         <div className="flex w-full h-screen">
             <aside className="w-1/2 h-full">
                 <img
-                    src="/path-to-your-awsome-bild" // Replace with your actual image path
+                    src="../thest.jpg"
                     alt="Side pics"
-                    className="w-full h-full object-cover" // This ensures the image covers the full aside area
+                    className="w-full h-full object-cover"
                 />
             </aside>
             <main className="w-1/2 flex justify-center items-center bg-white">

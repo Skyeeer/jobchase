@@ -20,7 +20,7 @@ const Header = ({ onSearchChange }) => {
                 <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
             </div>
             <div className="flex flex-col items-center justify-center"><Link to="/SignUpPage">
-                <h2 className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1">
+                <h2 className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white">
                     Sign Up
                 </h2>
             </Link><p className="text-xs">or</p><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></div>
@@ -35,11 +35,12 @@ const Aside = ({ jobs, onCardClick }) => {
             <div className={style.cardContainer}>
                 <ul>
                     {jobs.map((job) => (
-                        <li key={job.id} onClick={() => onCardClick(job)}>
-                            <div className={style.card}>
+
+                        <div className={style.card}>
+                            <li key={job.id} onClick={() => onCardClick(job)}>
                                 <div className={style.cardhead}>
                                     <h2 className={style.position}>{job.position}</h2>
-                                    <img className={style.bookmark} src={bookmark} width={30} height={30} alt='Bookmark'></img>
+                                    <img className={style.bookmark} src={bookmark} alt='Bookmark'></img>
                                 </div>
                                 <p className={style.org}>{job.company}</p>
                                 <p className='description'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error illo ea vero maxime maiores temporibus.</p>
@@ -51,8 +52,9 @@ const Aside = ({ jobs, onCardClick }) => {
                                         language && <div className={style.tag} key={language}>{language}</div>
                                     ))}
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        </div>
+
                     ))}
                 </ul>
             </div>

@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
+import 'tailwindcss/tailwind.css';
 
 
 

@@ -97,10 +97,15 @@ main {
     justify-content: space-between;
 }
 
-.bookmark:hover {
+.bookmark {
     width: 35px;
-    transition: 0.4s;
     height: 35px;
+}
+
+.bookmark:hover {
+    width: 40px;
+    transition: 0.4s;
+    height: 40px;
 }
 
 .position {

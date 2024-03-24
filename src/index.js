@@ -1,7 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './pages/chase';
-import './tailwind.css';
+import 'tailwindcss/tailwind.css';
+import './style.module.css'
 // import { BrowserRouter } from 'react-router-dom';
 
 const container = document.getElementById('root');
