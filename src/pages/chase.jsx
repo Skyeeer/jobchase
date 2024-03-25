@@ -4,8 +4,9 @@ import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
 import SignUpPage from './SignUpPage.jsx';
-import 'tailwindcss/tailwind.css';
+// import 'tailwindcss/tailwind.css';
 import { BrowserRouter, Link, Routes, Route, } from 'react-router-dom';
+import SignInPage from './signInPage.jsx';
 
 
 // import jobs from './jobs.json';
@@ -23,7 +24,7 @@ const Header = ({ onSearchChange }) => {
                 <h2 className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white">
                     Sign Up
                 </h2>
-            </Link><p className="text-xs">or</p><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></div>
+            </Link><p className="text-xs">or</p><Link to="/SignInPage"><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></Link></div>
         </header>
 
     );
@@ -36,8 +37,8 @@ const Aside = ({ jobs, onCardClick }) => {
                 <ul>
                     {jobs.map((job) => (
 
-                        <div className={style.card}>
-                            <li key={job.id} onClick={() => onCardClick(job)}>
+                        <div className={style.card} key={job.id}>
+                            <li onClick={() => onCardClick(job)}>
                                 <div className={style.cardhead}>
                                     <h2 className={style.position}>{job.position}</h2>
                                     <img className={style.bookmark} src={bookmark} alt='Bookmark'></img>
@@ -124,6 +125,7 @@ const App = () => {
                     </>
                 } />
                 <Route path="/SignUpPage" element={<SignUpPage />} />
+                <Route path="/SignInPage" element={<SignInPage />} />
                 {/* Define other routes as needed */}
             </Routes>
         </BrowserRouter>

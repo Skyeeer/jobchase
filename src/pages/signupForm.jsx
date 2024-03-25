@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
-import 'tailwindcss/tailwind.css';
+// import 'tailwindcss/tailwind.css';
 
 
 
@@ -63,29 +63,9 @@ function Signupform() {
             </div>
 
             <button type="submit" className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600">Register</button>
-            <Link to="/signin" className="block text-center mt-4 text-green-500 hover:text-green-600">Already have an account? Sign In</Link>
+            <Link to="/SignInPage" className="block text-center mt-4 text-green-500 hover:text-green-600">Already have an account? Sign In</Link>
         </form>
     );
 }
 
 export default Signupform;
-
-
-
-
-
-/* <div>
-                <label htmlFor="confirmPassword">Confirm Password:</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    {...register("confirmPassword", {
-                        required: "Please confirm your password",
-                        validate: (value) =>
-                            value === watch("password") || "Passwords do not match"
-                    })}
-                />
-                {errors.confirmPassword && (
-                    <span>{errors.confirmPassword.message}</span>
-                )}
-            </div> */
