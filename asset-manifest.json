@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/jobchase/static/css/main.eac3770e.css",
+    "main.js": "/jobchase/static/js/main.0e32a203.js",
+    "static/media/Hero.jpg": "/jobchase/static/media/Hero.a7e08b5c5badc8104117.jpg",
+    "static/media/login.jpg": "/jobchase/static/media/login.c1b8e12b4474c095de37.jpg",
+    "index.html": "/jobchase/index.html",
+    "main.eac3770e.css.map": "/jobchase/static/css/main.eac3770e.css.map",
+    "main.0e32a203.js.map": "/jobchase/static/js/main.0e32a203.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eac3770e.css",
+    "static/js/main.0e32a203.js"
+  ]
+}
