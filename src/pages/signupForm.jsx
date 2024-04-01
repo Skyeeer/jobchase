@@ -21,6 +21,7 @@ function Signupform() {
         createUserWithEmailAndPassword(Auth, data.email, data.password)
             .then(() => {
                 navigate("/signin");
+                login();
             })
             .catch((error) => {
                 console.error("Error creating user:", error);

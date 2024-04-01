@@ -1,5 +1,5 @@
 // App.js
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
@@ -12,21 +12,47 @@ import SignInPage from './signInPage.jsx';
 // import jobs from './jobs.json';
 // console.log(jobs);
 
+const AuthContext = createContext();
+const useAuth = () => useContext(AuthContext);
 const Header = ({ onSearchChange }) => {
-    return (
 
+    const { isLoggedIn, logout } = useAuth();
+
+    return (
         <header className={style.head}>
             <div className={style.header}>
-                <img src={logo} alt="logo gone" width="300" height="60"></img>
+                <img src={logo} alt="logo" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
             </div>
-            <div className="flex flex-col items-center justify-center"><Link to="/SignUpPage">
-                <h2 className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white">
-                    Sign Up
-                </h2>
-            </Link><p className="text-xs">or</p><Link to="/SignInPage"><h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>Login</h2></Link></div>
+            <div className="flex flex-col items-center justify-center">
+                {isLoggedIn ? (
+                    <>
+                        {/* User image placeholder */}
+                        <div className="w-10 h-10 bg-gray-300 rounded-full mr-2"></div>
+                        <button
+                            onClick={logout}
+                            className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white"
+                        >
+                            Logga Ut
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/SignUpPage">
+                            <h2 className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white">
+                                Sign Up
+                            </h2>
+                        </Link>
+                        <p className="text-xs">or</p>
+                        <Link to="/SignInPage">
+                            <h2 className='text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1'>
+                                Login
+                            </h2>
+                        </Link>
+                    </>
+                )}
+            </div>
         </header>
-
     );
 };
 
