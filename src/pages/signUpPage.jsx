@@ -1,13 +1,14 @@
 
 import React from 'react';
 import SignupForm from './signupForm';
+import thest from '../thest.jpg';
 
 function SignUpPage() {
     return (
         <div className="flex w-full h-screen">
             <aside className="w-1/2 h-full">
                 <img
-                    src="../thest.jpg"
+                    src={thest}
                     alt="Side pics"
                     className="w-full h-full object-cover"
                 />
