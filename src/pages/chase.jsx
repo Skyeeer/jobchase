@@ -97,7 +97,8 @@ const App = () => {
 
     //FETCH METOD
     useEffect(() => {
-        fetch('jobs.json')
+        const fetchJson = process.env.PUBLIC_URL + '/jobs.json';
+        fetch(fetchJson)
             .then(response => response.json())
             .then(data => setJobs(data))
             .catch(error => console.error('Error with fetching', error));
@@ -113,7 +114,7 @@ const App = () => {
 
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/jobchase">
             <Routes>
                 <Route path="/" element={
                     <>
