@@ -3,6 +3,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
+import { useAuth } from './chase';
+
 // import 'tailwindcss/tailwind.css';
 
 
@@ -16,11 +18,13 @@ function Signupform() {
         formState: { errors }
     } = useForm();
 
+    const { login } = useAuth();
+
 
     const formSubmit = (data) => {
         createUserWithEmailAndPassword(Auth, data.email, data.password)
             .then(() => {
-                navigate("/signin");
+                navigate("/home");
                 login();
             })
             .catch((error) => {

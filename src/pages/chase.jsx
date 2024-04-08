@@ -4,16 +4,44 @@ import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
 import SignUpPage from './signUpPage.jsx'
+import account from '../account.png'
 // import 'tailwindcss/tailwind.css';
-import { BrowserRouter, Link, Routes, Route, } from 'react-router-dom';
+import { BrowserRouter, Link, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './signInPage.jsx';
+import LandingPage from './landing.jsx';
 
 
 // import jobs from './jobs.json';
 // console.log(jobs);
-
 const AuthContext = createContext();
-const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);
+
+export const AuthProvider = ({ children }) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+
+    }, []);
+
+    const login = () => {
+        localStorage.setItem('isLoggedIn', 'true');
+        setIsLoggedIn(true);
+    };
+
+    const logout = () => {
+        localStorage.setItem('isLoggedIn', 'false');
+        setIsLoggedIn(false);
+    }
+
+
+    return (
+        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 const Header = ({ onSearchChange }) => {
 
     const { isLoggedIn, logout } = useAuth();
@@ -28,7 +56,7 @@ const Header = ({ onSearchChange }) => {
                 {isLoggedIn ? (
                     <>
                         {/* User image placeholder */}
-                        <div className="w-10 h-10 bg-gray-300 rounded-full mr-2"></div>
+                        <img src={account} alt='Profile' className="w-20 h-20 rounded-full mb-3"></img>
                         <button
                             onClick={logout}
                             className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white"
@@ -120,7 +148,6 @@ const App = () => {
     const handleSearch = (term) => {
         setSearchTerm(term.toLowerCase());
     };
-
     //FETCH METOD
     useEffect(() => {
         const fetchJson = process.env.PUBLIC_URL + '/jobs.json';
@@ -138,26 +165,49 @@ const App = () => {
         job.languages.some(language => language.toLowerCase().includes(searchTerm))
     );
 
+    const ProtectedRoute = ({ children }) => {
+        const { isLoggedIn } = useAuth();
+
+        return isLoggedIn ? children : <Navigate to="/SignInPage" replace />;
+    };
+
 
     return (
-        <BrowserRouter basename="/jobchase">
-            <Routes>
-                <Route path="/" element={
-                    <>
-                        <Header onSearchChange={handleSearch} />
-                        <div style={{ display: 'flex' }}>
-                            <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
-                            <Main job={selectedJob} />
-                        </div>
-                    </>
-                } />
-                <Route path="/SignUpPage" element={<SignUpPage />} />
-                <Route path="/SignInPage" element={<SignInPage />} />
-                {/* Define other routes as needed */}
-            </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+            <BrowserRouter basename="/jobchase">
+                <Routes>
+                    {/* <Route path="/" element={
+                        <>
+                            <Header onSearchChange={handleSearch} />
+                            <div style={{ display: 'flex' }}>
+                                <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
+                                <Main job={selectedJob} />
+                            </div>
+                        </>
+                    } /> */}
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/SignUpPage" element={<SignUpPage />} />
+                    <Route path="/SignInPage" element={<SignInPage />} />
+                    <Route
+                        path="/home"
+                        element={
+                            <ProtectedRoute>
+                                <>
+                                    <Header onSearchChange={handleSearch} />
+                                    <div style={{ display: 'flex' }}>
+                                        <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
+                                        <Main job={selectedJob} />
+                                    </div>
+                                </>
+                            </ProtectedRoute>
+                        }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
     );
 };
+
 
 
 export default App;

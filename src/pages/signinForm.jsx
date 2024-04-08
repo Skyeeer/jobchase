@@ -3,9 +3,14 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
 import style from '../style.module.css';
+import { useAuth } from './chase';
+
+
 
 function SignInForm() {
     const navigate = useNavigate();
+
+    const { login } = useAuth();
 
     const {
         register,
@@ -21,12 +26,12 @@ function SignInForm() {
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log("User signed in:", user);
-                navigate("");
+                navigate("/home");
                 login();
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
             });
     };
 

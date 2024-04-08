@@ -158,3 +158,15 @@ ul {
     min-height: 100vh;
     /* filter: blur(4px); */
 }
+
+.landing {
+    background-image: url(Gunp.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 70vw;
+    height: 96vh;
+    border-radius: 40px;
+    margin: 0;
+    padding: 0;
+}
