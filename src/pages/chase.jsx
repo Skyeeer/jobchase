@@ -9,6 +9,7 @@ import account from '../account.png'
 import { BrowserRouter, Link, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './signInPage.jsx';
 import LandingPage from './landing.jsx';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 // import jobs from './jobs.json';
@@ -20,31 +21,30 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, user => {
+            if (user) {
+                setIsLoggedIn(true);
+                // localStorage.setItem('isLoggedIn', 'true');
+            } else {
+                setIsLoggedIn(false);
+                // localStorage.setItem('isLoggedIn', 'false');
+            }
+        });
 
+        return () => unsubscribe();
     }, []);
 
-    const login = () => {
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn(true);
-    };
-
-    const logout = () => {
-        localStorage.setItem('isLoggedIn', 'false');
-        setIsLoggedIn(false);
-    }
-
-
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
             {children}
         </AuthContext.Provider>
     );
 };
 const Header = ({ onSearchChange }) => {
 
-    const { isLoggedIn, logout } = useAuth();
+    const { isLoggedIn } = useAuth();
+    const { setIsLoggedIn } = useContext(AuthContext);
 
     return (
         <header className={style.head}>
@@ -58,7 +58,11 @@ const Header = ({ onSearchChange }) => {
                         {/* User image placeholder */}
                         <img src={account} alt='Profile' className="w-20 h-20 rounded-full mb-3"></img>
                         <button
-                            onClick={logout}
+                            onClick={() => {
+                                setIsLoggedIn(false);
+                                // localStorage.setItem('isLoggedIn', 'false');
+
+                            }}
                             className="text-green-500 border border-green-500 bg-white text-lg py-1 px-3 shadow-md mt-1 hover:bg-green-500 hover:text-white"
                         >
                             Logga Ut
@@ -136,6 +140,8 @@ const Main = ({ job }) => {
         </main>
     );
 };
+
+
 
 const App = () => {
     // const [jobs, setJobs] = useState([]);

@@ -26,6 +26,7 @@ function Signupform() {
             .then(() => {
                 navigate("/home");
                 login();
+                // localStorage.setItem('isLoggedIn', 'true');
             })
             .catch((error) => {
                 console.error("Error creating user:", error);

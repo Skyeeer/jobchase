@@ -6,7 +6,7 @@ import logo from '../logo.png';
 
 const LandingPage = () => {
     return (
-        <body className='flex h-screen'>
+        <div className='flex h-screen'>
             <div className={style.landing}>
             </div>
             <div className='flex-grow mt-[-6rem]'>
@@ -16,7 +16,7 @@ const LandingPage = () => {
                     <Link to="/SignUpPage" className="bg-lime-500 text-white px-6 py-3 rounded-full cursor-pointer hover:bg-lime-600 mt-4">Sign Up</Link>
                 </div>
             </div>
-        </body>
+        </div>
 
 
     );

@@ -28,6 +28,7 @@ function SignInForm() {
                 console.log("User signed in:", user);
                 navigate("/home");
                 login();
+                // localStorage.setItem('isLoggedIn', 'true');
             })
             .catch((error) => {
                 // const errorCode = error.code;
