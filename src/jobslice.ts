@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Job, JobsState, Filters } from './jobTypes';
+import { RootState } from './store';
+import { Root } from 'react-dom/client';
 
 const initialState: JobsState = {
     allJobs: [],
@@ -47,6 +49,25 @@ function filterJobs(state: JobsState): Job[] {
             : true)
     );
 }
+
+export const SelectAllJobs = (state: RootState) => state.jobs.allJobs;
+
+export const selectUnique = (key: keyof Job) => createSelector(
+    (state: RootState) => state.jobs.allJobs,
+    (allJobs: Job[]) => {
+        const result = new Set<string>();
+        allJobs.forEach(job => {
+            const value = job[key];
+            if (Array.isArray(value)) {
+                value.forEach(item => result.add(item));
+            } else if (value) {
+                result.add(value);
+            }
+        });
+        return Array.from(result);
+    }
+)
+
 
 export const { setJobs, setFilters, selectJob } = jobsSlice.actions;
 

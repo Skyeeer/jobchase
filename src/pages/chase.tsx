@@ -11,7 +11,7 @@ import SignInPage from './signInPage';
 import LandingPage from './landing';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { setJobs, setFilters, selectJob } from '../jobslice';
+import { setJobs, setFilters, selectJob, selectUnique } from '../jobslice';
 
 
 // import jobs from './jobs.json';
@@ -108,12 +108,65 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
         }
     }
 
+    const languages = useAppSelector(selectUnique('languages'));
+    const levels = useAppSelector(selectUnique('level'));
+    const locations = useAppSelector(selectUnique('location'));
+    const dispatch = useAppDispatch();
+
+    const [selectedFilters, setSelectedFilter] = useState<Set<string>>(new Set());
+
+
+    const toggleFilter = (filter: string) => {
+        setSelectedFilter(prev => {
+            const newSet = new Set(prev);  // Clone the previous set to ensure immutability
+            console.log(`Current Filters: ${Array.from(newSet)}`);  // Log current filters
+            if (newSet.has(filter)) {
+                console.log(`Removing Filter: ${filter}`);  // Log removal attempt
+                newSet.delete(filter);
+            } else {
+                console.log(`Adding Filter: ${filter}`);  // Log addition attempt
+                newSet.add(filter);
+            }
+            console.log(`Updated Filters: ${Array.from(newSet)}`);  // Log updated filters
+            return new Set(newSet);  // Return the updated set
+        });
+        dispatch(setFilters({ searchTerm: filter, language: '', contractType: '', level: '' }));
+    };
+
     return (
         <header className={style.head}>
             <div className={style.header}>
                 <img src={logo} alt="logo" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' value={inputValue} onKeyDown={enter} onChange={handleChange}></input>
-                <div className='Filters'> <p>Death</p></div>
+                <div className="filter-buttons flex gap-2 mt-2">
+                    {languages.map(language => (
+                        <button
+                            key={language}
+                            onClick={() => toggleFilter(language)}
+                            className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(language) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
+                        >
+                            {language}
+                        </button>
+                    ))}
+                    {levels.map(level => (
+                        <button
+                            key={level}
+                            onClick={() => toggleFilter(level)}
+                            className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(level) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
+                        >
+                            {level}
+                        </button>
+                    ))}
+                    {locations.map(location => (
+                        <button
+                            key={location}
+                            onClick={() => toggleFilter(location)}
+                            className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(location) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
+                        >
+                            {location}
+                        </button>
+                    ))}
+                </div>
             </div>
             <div className="flex flex-col items-center justify-center">
                 {isLoggedIn ? (
