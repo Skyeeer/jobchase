@@ -42,7 +42,9 @@ function filterJobs(state: JobsState): Job[] {
             job.location?.toLowerCase().includes(state.filters.searchTerm.toLowerCase()) ||
             job.contract.toLowerCase().includes(state.filters.searchTerm.toLowerCase()) ||
             job.level?.toLowerCase().includes(state.filters.searchTerm.toLowerCase()) ||
-            job.company.toLowerCase().includes(state.filters.searchTerm.toLowerCase()) : true)
+            job.company.toLowerCase().includes(state.filters.searchTerm.toLowerCase()) ||
+            (job.languages && job.languages.some(language => language.toLowerCase().includes(state.filters.searchTerm.toLowerCase())))
+            : true)
     );
 }
 

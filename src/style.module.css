@@ -1,5 +1,6 @@
 body {
     padding: 8px;
+    /* height: 100vh;    */
 }
 
 .header {
@@ -148,6 +149,7 @@ ul {
     margin-top: 10px;
     max-height: 78vh;
     overflow-y: auto;
+    /* overflow: hidden; */
 }
 
 .loginBackground {

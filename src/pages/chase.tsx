@@ -96,12 +96,23 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
     // const { isLoggedIn } = useAuth();
     // const { setIsLoggedIn } = useContext(AuthContext);
     const { isLoggedIn, setIsLoggedIn } = useAuth();
+    const [inputValue, setInputValue] = useState("");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
+    }
+
+    const enter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            onSearchChange(inputValue);
+        }
+    }
 
     return (
         <header className={style.head}>
             <div className={style.header}>
                 <img src={logo} alt="logo" width="300" height="60"></img>
-                <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
+                <input className={style.search} type='text' placeholder='SEARCH' value={inputValue} onKeyDown={enter} onChange={handleChange}></input>
                 <div className='Filters'> <p>Death</p></div>
             </div>
             <div className="flex flex-col items-center justify-center">
