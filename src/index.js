@@ -3,19 +3,26 @@ import { createRoot } from 'react-dom/client';
 import App from './pages/chase';
 import 'tailwindcss/tailwind.css';
 import './style.module.css'
+import { Provider } from 'react-redux';
+import { store } from './store';
 // import { BrowserRouter } from 'react-router-dom';
 
 const container = document.getElementById('root');
-const root = createRoot(container);
 
-root.render(
-    <React.StrictMode>
 
-        <App />
+if (container) {
+    const root = createRoot(container);
 
-    </React.StrictMode>
-);
-
+    root.render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </React.StrictMode>
+    );
+} else {
+    console.log("Failed to find root element");
+}
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 // root.render(

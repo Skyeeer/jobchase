@@ -1,5 +1,5 @@
 // App.js
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, FC } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
@@ -10,6 +10,8 @@ import { BrowserRouter, Link, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './signInPage';
 import LandingPage from './landing';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { setJobs, setFilters, selectJob } from '../jobslice';
 
 
 // import jobs from './jobs.json';
@@ -46,7 +48,7 @@ const defAuthContex: AuthContextType = {
 };
 
 interface ChildProp {
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
 
@@ -100,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
             <div className={style.header}>
                 <img src={logo} alt="logo" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
-                <div> <p>Death</p></div>
+                <div className='Filters'> <p>Death</p></div>
             </div>
             <div className="flex flex-col items-center justify-center">
                 {isLoggedIn ? (
@@ -139,11 +141,12 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
 };
 
 interface AsideProps {
-    jobs: Job[];
     onCardClick: (job: Job) => void;
+    jobs: Job[];
 }
 
-const Aside: React.FC<AsideProps> = ({ jobs, onCardClick }) => {
+const Aside: React.FC<AsideProps> = ({ onCardClick }) => {
+    const jobs = useAppSelector(state => state.jobs.filteredJobs);
     return (
         <aside className={style.aside}>
             <div className={style.cardContainer}>
@@ -178,11 +181,12 @@ const Aside: React.FC<AsideProps> = ({ jobs, onCardClick }) => {
 
 interface MainProps {
     job?: Job;
-    jobs: Job[];
+    // jobs: Job[];
 }
 
-const Main: React.FC<MainProps> = ({ job, jobs }) => {
-    if (!job) return <main></main>;
+const Main: React.FC<MainProps> = () => {
+    const selectedJob = useAppSelector(state => state.jobs.selectedJob);
+    if (!selectedJob) return <main></main>;
 
     //************MÅSTE STYLAS************
     return (
@@ -190,10 +194,10 @@ const Main: React.FC<MainProps> = ({ job, jobs }) => {
             <div className={style.article}>
                 <div className={style.heroImg}></div>
                 <div className={style.artBody}>
-                    <h2 className={style.position}>{job.position}</h2>
-                    <p className={style.org}>{job.company}</p>
+                    <h2 className={style.position}>{selectedJob.position}</h2>
+                    <p className={style.org}>{selectedJob.company}</p>
                     <button className={style.apply}>Apply</button>
-                    <p>{job.description || 'Job description goes here.'}</p>
+                    <p>{selectedJob.description || 'Job description goes here.'}</p>
                 </div>
             </div>
         </main>
@@ -203,57 +207,53 @@ const Main: React.FC<MainProps> = ({ job, jobs }) => {
 
 
 const App: React.FC = () => {
-    // const [jobs, setJobs] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedJob, setSelectedJob] = useState<Job | undefined>(undefined);
-    const [jobs, setJobs] = useState<Job[]>([]);
-    const handleCardCheck = (job: Job) => {
-        setSelectedJob(job);
-    };
-    const clearSelectedJob = () => {
-        setSelectedJob(undefined);
-    }
-    const handleSearch = (term: string) => {
-        setSearchTerm(term.toLowerCase());
-    }
 
-    //FETCH METOD
+    const dispatch = useAppDispatch();
+    const { filteredJobs } = useAppSelector(state => state.jobs);
+
     useEffect(() => {
         const fetchJson = process.env.PUBLIC_URL + '/jobs.json';
         fetch(fetchJson)
             .then(response => response.json())
-            .then(data => setJobs(data))
+            .then(data => dispatch(setJobs(data)))
             .catch(error => console.error('Error with fetching', error));
-    }, []);
+    }, [dispatch]);
 
-    const filteredJobs = jobs.filter((job) =>
-        (job.location?.toLowerCase() ?? '').includes(searchTerm) ||
-        (job.contract?.toLowerCase() ?? '').includes(searchTerm) ||
-        (job.level?.toLowerCase() ?? '').includes(searchTerm) ||
-        job.company.toLowerCase().includes(searchTerm) ||
-        job.languages.some(language => language.toLowerCase().includes(searchTerm))
-    );
+    const handleSearch = (term: string) => {
+        dispatch(setFilters({ searchTerm: term.toLowerCase() }));
+    }
 
-    const ProtectedRoute: React.FC<ChildProp> = ({ children }) => {
-        const { isLoggedIn } = useAuth();
-
-        return isLoggedIn ? children : <Navigate to="/SignInPage" replace />;
+    const handleCardCheck = (job: Job) => {
+        dispatch(selectJob(job));
     };
 
+    const clearSelectedJob = () => {
+        dispatch(selectJob(undefined));
+    };
+
+    const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
+        const { isLoggedIn } = useAuth();
+
+        if (!isLoggedIn) {
+            return <Navigate to="/SignInPage" replace />;
+        }
+
+        return <>{children}</> || null;
+    };
 
     return (
         <AuthProvider>
             <BrowserRouter basename="/jobchase">
                 <Routes>
                     {/* <Route path="/" element={
-                        <>
-                            <Header onSearchChange={handleSearch} />
-                            <div style={{ display: 'flex' }}>
-                                <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
-                                <Main job={selectedJob} />
-                            </div>
-                        </>
-                    } /> */}
+                            <>
+                                <Header onSearchChange={handleSearch} />
+                                <div style={{ display: 'flex' }}>
+                                    <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
+                                    <Main job={selectedJob} />
+                                </div>
+                            </>
+                        } /> */}
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/SignUpPage" element={<SignUpPage />} />
                     <Route path="/SignInPage" element={<SignInPage />} />
@@ -265,7 +265,7 @@ const App: React.FC = () => {
                                     <Header onSearchChange={handleSearch} />
                                     <div style={{ display: 'flex' }}>
                                         <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
-                                        <Main job={selectedJob} jobs={filteredJobs} />
+                                        <Main />
                                     </div>
                                 </>
                             </ProtectedRoute>
