@@ -8,7 +8,7 @@ import account from '../account.png'
 // import 'tailwindcss/tailwind.css';
 import { BrowserRouter, Link, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './signInPage';
-import LandingPage from './landing';
+import LandingPage from './index';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setJobs, setFilters, selectJob, selectUnique } from '../jobslice';
