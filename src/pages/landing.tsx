@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import style from '../style.module.css';
 import logo from '../logo.png';
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
     return (
         <div className='flex h-screen'>
             <div className={style.landing}>

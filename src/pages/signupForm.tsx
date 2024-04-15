@@ -1,27 +1,32 @@
-// import React from 'react';
+import React from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
 import { useAuth } from './chase';
 
 // import 'tailwindcss/tailwind.css';
 
+interface FormData {
+    email: string;
+    password: string;
+}
 
 
-function Signupform() {
+
+const Signupform: React.FC = () => {
 
     const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm();
+    } = useForm<FormData>();
 
     const { login } = useAuth();
 
 
-    const formSubmit = (data) => {
+    const formSubmit: SubmitHandler<FormData> = (data) => {
         createUserWithEmailAndPassword(Auth, data.email, data.password)
             .then(() => {
                 navigate("/home");

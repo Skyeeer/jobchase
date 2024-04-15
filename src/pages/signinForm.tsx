@@ -1,13 +1,17 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "../firebase.config";
 import style from '../style.module.css';
 import { useAuth } from './chase';
 
+interface FormData {
+    email: string;
+    password: string;
+}
 
 
-function SignInForm() {
+const SignInForm: React.FC = () => {
     const navigate = useNavigate();
 
     const { login } = useAuth();
@@ -16,9 +20,9 @@ function SignInForm() {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm();
+    } = useForm<FormData>();
 
-    const formSubmit = (data) => {
+    const formSubmit: SubmitHandler<FormData> = (data) => {
         console.log("Form submitted:", data);
         const { email, password } = data;
 

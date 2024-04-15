@@ -1,56 +1,106 @@
 // App.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
-import SignUpPage from './signUpPage.jsx'
+import SignUpPage from './signUpPage';
 import account from '../account.png'
 // import 'tailwindcss/tailwind.css';
 import { BrowserRouter, Link, Routes, Route, Navigate } from 'react-router-dom';
-import SignInPage from './signInPage.jsx';
-import LandingPage from './landing.jsx';
+import SignInPage from './signInPage';
+import LandingPage from './landing';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 // import jobs from './jobs.json';
 // console.log(jobs);
-const AuthContext = createContext();
+
+interface Job {
+    id: string;
+    position: string;
+    company: string;
+    location: string;
+    contract: string;
+    level?: string;
+    languages: string[];
+    description?: string;
+}
+
+interface AuthContextType {
+    isLoggedIn: boolean;
+    setIsLoggedIn: (loggedIn: boolean) => void;
+    login: () => void;
+    logout: () => void;
+}
+
+const defAuthContex: AuthContextType = {
+    isLoggedIn: false,
+    setIsLoggedIn: () => { },
+    login: () => {
+        console.log("Login");
+    },
+    logout: () => {
+        console.log("Logout");
+    },
+
+};
+
+interface ChildProp {
+    children: ReactNode;
+}
+
+
+const AuthContext = createContext<AuthContextType>(defAuthContex);
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider: React.FC<ChildProp> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const login = useCallback(() => {
+        setIsLoggedIn(true); // Might just set logged in status or could be extended.
+        console.log("Logged in via context");
+    }, []);
+
+    const logout = useCallback(() => {
+        setIsLoggedIn(false);
+        console.log("Logged out via context");
+    }, []);
 
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, user => {
-            if (user) {
-                setIsLoggedIn(true);
-                // localStorage.setItem('isLoggedIn', 'true');
-            } else {
-                setIsLoggedIn(false);
-                // localStorage.setItem('isLoggedIn', 'false');
+            setIsLoggedIn(!!user);
+            if (!user) {
+                // Handle what happens if the user is logged out
+                console.log("User is logged out");
             }
         });
-
         return () => unsubscribe();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
-const Header = ({ onSearchChange }) => {
 
-    const { isLoggedIn } = useAuth();
-    const { setIsLoggedIn } = useContext(AuthContext);
+interface HeaderProps {
+    onSearchChange: (value: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
+
+    // const { isLoggedIn } = useAuth();
+    // const { setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn } = useAuth();
 
     return (
         <header className={style.head}>
             <div className={style.header}>
                 <img src={logo} alt="logo" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' onChange={(e) => onSearchChange(e.target.value)}></input>
+                <div> <p>Death</p></div>
             </div>
             <div className="flex flex-col items-center justify-center">
                 {isLoggedIn ? (
@@ -88,7 +138,12 @@ const Header = ({ onSearchChange }) => {
     );
 };
 
-const Aside = ({ jobs, onCardClick }) => {
+interface AsideProps {
+    jobs: Job[];
+    onCardClick: (job: Job) => void;
+}
+
+const Aside: React.FC<AsideProps> = ({ jobs, onCardClick }) => {
     return (
         <aside className={style.aside}>
             <div className={style.cardContainer}>
@@ -121,8 +176,12 @@ const Aside = ({ jobs, onCardClick }) => {
     );
 };
 
+interface MainProps {
+    job?: Job;
+    jobs: Job[];
+}
 
-const Main = ({ job }) => {
+const Main: React.FC<MainProps> = ({ job, jobs }) => {
     if (!job) return <main></main>;
 
     //************MÅSTE STYLAS************
@@ -143,17 +202,21 @@ const Main = ({ job }) => {
 
 
 
-const App = () => {
+const App: React.FC = () => {
     // const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedJob, setSelectedJob] = useState(null);
-    const [jobs, setJobs] = useState([]);
-    const handleCardCheck = (job) => {
+    const [selectedJob, setSelectedJob] = useState<Job | undefined>(undefined);
+    const [jobs, setJobs] = useState<Job[]>([]);
+    const handleCardCheck = (job: Job) => {
         setSelectedJob(job);
     };
-    const handleSearch = (term) => {
+    const clearSelectedJob = () => {
+        setSelectedJob(undefined);
+    }
+    const handleSearch = (term: string) => {
         setSearchTerm(term.toLowerCase());
-    };
+    }
+
     //FETCH METOD
     useEffect(() => {
         const fetchJson = process.env.PUBLIC_URL + '/jobs.json';
@@ -164,14 +227,14 @@ const App = () => {
     }, []);
 
     const filteredJobs = jobs.filter((job) =>
-        job.location.toLowerCase().includes(searchTerm) ||
-        job.contract.toLowerCase().includes(searchTerm) ||
-        job.level.toLowerCase().includes(searchTerm) ||
+        (job.location?.toLowerCase() ?? '').includes(searchTerm) ||
+        (job.contract?.toLowerCase() ?? '').includes(searchTerm) ||
+        (job.level?.toLowerCase() ?? '').includes(searchTerm) ||
         job.company.toLowerCase().includes(searchTerm) ||
         job.languages.some(language => language.toLowerCase().includes(searchTerm))
     );
 
-    const ProtectedRoute = ({ children }) => {
+    const ProtectedRoute: React.FC<ChildProp> = ({ children }) => {
         const { isLoggedIn } = useAuth();
 
         return isLoggedIn ? children : <Navigate to="/SignInPage" replace />;
@@ -202,7 +265,7 @@ const App = () => {
                                     <Header onSearchChange={handleSearch} />
                                     <div style={{ display: 'flex' }}>
                                         <Aside onCardClick={handleCardCheck} jobs={filteredJobs} />
-                                        <Main job={selectedJob} />
+                                        <Main job={selectedJob} jobs={filteredJobs} />
                                     </div>
                                 </>
                             </ProtectedRoute>
