@@ -1,5 +1,5 @@
 // App.js
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, FC } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, FC, useRef } from 'react';
 import logo from '../logo.png';
 import style from '../style.module.css';
 import bookmark from '../bookmark.png';
@@ -114,6 +114,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
     const dispatch = useAppDispatch();
 
     const [selectedFilters, setSelectedFilter] = useState<Set<string>>(new Set());
+    const filterContainerRef = useRef<HTMLDivElement>(null);
 
 
     const toggleFilter = (filter: string) => {
@@ -132,17 +133,34 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
         });
         dispatch(setFilters({ searchTerm: filter, language: '', contractType: '', level: '' }));
     };
+    useEffect(() => {
+        const container = filterContainerRef.current;
+        if (container) {
+            const handleFilterClick = (e: MouseEvent) => {
+                const target = e.target as HTMLElement; // Cast the target to HTMLElement
+                if (target.tagName === 'BUTTON' && target.dataset.filter) {
+                    toggleFilter(target.dataset.filter);
+                }
+            };
+
+            container.addEventListener('click', handleFilterClick);
+
+            return () => {
+                container.removeEventListener('click', handleFilterClick);
+            };
+        }
+    }, []);
 
     return (
         <header className={style.head}>
             <div className={style.header}>
                 <img src={logo} alt="logo" width="300" height="60"></img>
                 <input className={style.search} type='text' placeholder='SEARCH' value={inputValue} onKeyDown={enter} onChange={handleChange}></input>
-                <div className="filter-buttons flex gap-2 mt-2">
+                <div ref={filterContainerRef} className="filter-buttons flex gap-2 mt-2">
                     {languages.map(language => (
                         <button
                             key={language}
-                            onClick={() => toggleFilter(language)}
+                            data-filter={language}
                             className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(language) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
                         >
                             {language}
@@ -151,7 +169,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
                     {levels.map(level => (
                         <button
                             key={level}
-                            onClick={() => toggleFilter(level)}
+                            data-filter={level}
                             className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(level) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
                         >
                             {level}
@@ -160,7 +178,7 @@ const Header: React.FC<HeaderProps> = ({ onSearchChange }) => {
                     {locations.map(location => (
                         <button
                             key={location}
-                            onClick={() => toggleFilter(location)}
+                            data-filter={location}
                             className={`px-4 py-1 border border-gray-300 ${selectedFilters.has(location) ? "bg-[#0fc5ff] text-white" : "bg-white text-gray-900"} focus:outline-none hover:bg-[#0bafb8] hover:text-white`}
                         >
                             {location}
